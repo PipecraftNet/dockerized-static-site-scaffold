@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  web:
+    image: nginx
+    environment:
+      VIRTUAL_HOST: default.localhost,${VIRTUAL_HOST:-example.com}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+    restart: always
+    volumes:
+      - ./public/:/usr/share/nginx/html
+    # stdin_open: true
+    # tty: true
+    # ports:
+    #   - "${APP_PORT:-3000}:80"
+    networks:
+      - default
+      - proxy
+
+networks:
+  proxy:
+    external:
+      name: nginx-proxy-compose_default
